@@ -19,7 +19,7 @@ I didn't implement most of the real features of a Ransomware, like deleting shad
 
 ### How it works
 
-minizinh0-FUD works on a hidden secondary desktop. It takes the path of the current user, and starts walking X levels (configurable) in-depth, looking for files with extensions that are on the list: docx|pdf|xlsx|pptx|ppsx|kdbx|sqlite|zip|rar|jpg|png|html|htm. When a target file is found, the ransomware copies it (simulating the user) to %TEMP%\temp.png, opens it (ReadFile), encrypts it and saves (WriteFile) to %TEMP%\temp.mp3. Next, it moves (simulating the user) the file temp.mp3 (target file encrypted) to the Original Path + .mat extension (e.g., C:\important-file.db.mat), creates a Ransom Note in the directory with the echo command, and go to the next one.
+minizinh0-FUD works on a hidden secondary desktop. It takes the path of the current user, and starts walking X levels (configurable) in-depth, looking for files with extensions that are on the list: docx|pdf|xlsx|pptx|ppsx|kdbx|sqlite|zip|rar|jpg|png|html|htm. When a target file is found, the ransomware moves it (simulating the user) to %TEMP%\temp.png, opens it (ReadFile), encrypts it and saves (WriteFile) to %TEMP%\temp.mp3. Next, it moves (simulating the user) the file temp.mp3 (target file encrypted) to the Original Path + .mat extension (e.g., C:\important-file.db.mat), creates a Ransom Note in the directory with the echo command, and go to the next one.
 
 I'm encrypting the Key and IV of AES-CBC 128-bit with my RSA Public Key 2048-bit. I use the same Key/IV for all files. By decrypting it, the victim can recover their files.
 
@@ -27,7 +27,17 @@ One of the disadvantages of minizinh0-FUD, is that the process of encrypting eac
 
 ### minizinh0-FUD demo, have fun :)
 
-[PoC Video](https://youtu.be/2a4wEv9FcmA) (ignore the debugging messages)
+Ignore the debugging messages.
+
+[PoC Video against Kaspersky](https://youtu.be/2a4wEv9FcmA)
+
+[PoC Video against ESET](https://youtu.be/JBFmOi4_G0M)
+
+**May 2021**: Tested against CrowdStrike EDR — it was not detected and didn't even generate telemetry.
+
+**August 2025**: Tested again against CrowdStrike — still not detected, even with the policy set to "Extra Aggressive" and all options enabled.
+
+**August 2025**: Tested against SentinelOne EDR — it is only detected when the "Detect Interactive Threat" option is enabled. The cmd.exe process running in the hidden desktop is killed, but the binary responsible for orchestrating the execution is not identified. This means it could be executed again as many times as needed, and if the execution is done in stages/batches (encrypting fewer than ~600 files each time), I believe the objective could be achieved without EDR interference.
 
 ### My Ransom Note (in pt-br)
 
@@ -41,7 +51,9 @@ Use it to think about solutions in how to defeat this very cool technique!
 
 ### Get in touch
 
-If you wanna talk more about these techniques, get in touch via IRC (gnx @ freenode), Telegram (@gnxbr) or e-mail (alisson[at]bertochi[.]com[.]br).
+If you wanna talk more about these techniques, get in touch via Telegram (@gnxbr) or e-mail (alisson[at]bertochi[.]com[.]br). 
+
+Follow me on Twitter: [@alissonbertochi](https://twitter.com/alissonbertochi)! :)
 
 
 
